@@ -23,9 +23,11 @@ class PositionModel(db.Model):
     def __repr__(self):
         return f'<Position {self.ticker}, {self.name}, {self.unit}>'
 
+# Single record
 user_args = reqparse.RequestParser()
 user_args.add_argument('ticker', type=str, required=True, help='ticker is required')
 user_args.add_argument('name', type=str, required=True, help='name is required')
+user_args.add_argument('unit', type=str, required=False)
 
 userFields = {
     'id': fields.Integer,
@@ -42,6 +44,7 @@ class Positions(Resource):
 
     @marshal_with(userFields)
     def post(self):
+
         args = user_args.parse_args()
         position = PositionModel(ticker=args['ticker'], name=args['name'], unit=args.get('unit', 0))
         db.session.add(position)
