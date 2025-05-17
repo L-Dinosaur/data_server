@@ -1,10 +1,11 @@
 import requests
 import pandas as pd
 
+positions_url = 'http://127.0.0.1:5000/api/positions'
+position_url = 'http://127.0.0.1:5000/api/position'
 
 def populate_rds():
-    positions_url = 'http://127.0.0.1:5000/api/positions'
-    position_url = 'http://127.0.0.1:5000/api/position'
+
     portfolio = pd.read_csv('data/portfolio.csv')
     post_data = portfolio.to_dict('records')
 
@@ -23,5 +24,9 @@ def populate_rds():
     print(g.json())
 
 
+def simple_query():
+    g = requests.get(positions_url)
+    print(g.json())
+
 if __name__ == '__main__':
-    populate_rds()
+    simple_query()
